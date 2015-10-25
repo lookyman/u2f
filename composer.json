@@ -1,0 +1,28 @@
+{
+	"name": "lookyman/u2f",
+	"description": "",
+	"keywords": ["FIDO", "U2F"],
+	"license": ["MIT"],
+	"authors": [
+		{
+			"name": "Lukáš Unger",
+			"email": "looky.msc@gmail.com",
+			"homepage": "https://lookyman.net"
+		}
+	],
+	"require": {
+		"php": ">=5.5",
+		"ext-openssl": "*",
+		"nette/utils": "^2.3"
+	},
+	"require-dev": {
+		"nette/robot-loader": "^2.3",
+		"phpunit/phpunit": "^4.8",
+		"satooshi/php-coveralls": "dev-master"
+	},
+	"autoload": {
+		"psr-4": {
+			"lookyman\\U2f\\": "src/"
+		}
+	}
+}
