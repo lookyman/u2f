@@ -15,6 +15,12 @@ class RegistrationTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame('a', $registration->getKeyHandle());
 		$this->assertSame('b', $registration->getCertificate());
 		$this->assertSame(-1, $registration->getCounter());
+
+		$withoutCert = new Registration($this->getPublicKey(), 'c');
+		$this->assertSame($this->getPublicKey(), $withoutCert->getPublicKey());
+		$this->assertSame('c', $withoutCert->getKeyHandle());
+		$this->assertNull($withoutCert->getCertificate());
+		$this->assertSame(-1, $withoutCert->getCounter());
 	}
 
 	public function testSetCounter()
