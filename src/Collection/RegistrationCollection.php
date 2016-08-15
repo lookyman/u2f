@@ -1,36 +1,39 @@
 <?php
+declare(strict_types=1);
 
-namespace lookyman\U2f\Server;
+namespace Lookyman\U2F\Collection;
 
-use lookyman\U2f\Exception\IException;
-use lookyman\U2f\Exception\RegistrationException;
+use Lookyman\U2F\Exception\IException;
+use Lookyman\U2F\Exception\RegistrationException;
+use Lookyman\U2F\Registration;
+use Lookyman\U2F\Response\SignResponse;
 
 class RegistrationCollection implements \Countable, \IteratorAggregate
 {
-
-	/** @var Registration[] */
+	/**
+	 * @var Registration[]
+	 */
 	private $registrations = [];
 
 	/**
-	 * @return self
+	 * @param Registration $registration
 	 */
 	public function add(Registration $registration)
 	{
 		$this->registrations[] = $registration;
-		return $this;
 	}
 
 	/**
 	 * @return Registration
 	 */
-	public function getMatchingRegistration(SignResponse $response)
+	public function getMatchingRegistration(SignResponse $signResponse): Registration
 	{
 		foreach ($this->registrations as $registration) {
-			if ($registration->getKeyHandle() === $response->getKeyHandle()) {
+			if ($registration->getKeyHandle() === $signResponse->getKeyHandle()) {
 				return $registration;
 			}
 		}
-		throw new RegistrationException('No matching Registration found.', IException::ERR_NO_MATCHING_REGISTRATION);
+		throw new RegistrationException('No matching registration found', IException::ERR_NO_MATCHING_REGISTRATION);
 	}
 
 	/**
@@ -50,5 +53,4 @@ class RegistrationCollection implements \Countable, \IteratorAggregate
 	{
 		return count($this->registrations);
 	}
-
 }

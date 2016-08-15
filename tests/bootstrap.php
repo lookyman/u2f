@@ -1,14 +1,9 @@
 <?php
-
-use Nette\Caching\Storages\DevNullStorage;
-use Nette\Loaders\RobotLoader;
+declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$loader = new RobotLoader;
-$loader->autoRebuild = TRUE;
-$loader->setCacheStorage(new DevNullStorage)
-	->addDirectory(__DIR__)
-	->register();
-
-define('TEMP_DIR', __DIR__ . '/tmp');
+function getPublicKey(): string
+{
+	return "\x04" . str_repeat("\0", \Lookyman\U2F\Helpers::PUBLIC_KEY_LENGTH - 1);
+}

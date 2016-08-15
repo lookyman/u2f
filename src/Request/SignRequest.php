@@ -1,20 +1,30 @@
 <?php
+declare(strict_types=1);
 
-namespace lookyman\U2f\Server;
+namespace Lookyman\U2F\Request;
+
+use Lookyman\U2F\Helpers;
 
 class SignRequest implements \JsonSerializable
 {
-
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $version;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $appId;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $challenge;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $keyHandle;
 
 	/**
@@ -23,7 +33,7 @@ class SignRequest implements \JsonSerializable
 	 * @param string $challenge
 	 * @param string $keyHandle
 	 */
-	public function __construct($version, $appId, $challenge, $keyHandle)
+	public function __construct(string $version, string $appId, string $challenge, string $keyHandle)
 	{
 		$this->version = $version;
 		$this->appId = $appId;
@@ -34,7 +44,7 @@ class SignRequest implements \JsonSerializable
 	/**
 	 * @return string
 	 */
-	public function getVersion()
+	public function getVersion(): string
 	{
 		return $this->version;
 	}
@@ -42,7 +52,7 @@ class SignRequest implements \JsonSerializable
 	/**
 	 * @return string
 	 */
-	public function getAppId()
+	public function getAppId(): string
 	{
 		return $this->appId;
 	}
@@ -50,7 +60,7 @@ class SignRequest implements \JsonSerializable
 	/**
 	 * @return string
 	 */
-	public function getChallenge()
+	public function getChallenge(): string
 	{
 		return $this->challenge;
 	}
@@ -58,7 +68,7 @@ class SignRequest implements \JsonSerializable
 	/**
 	 * @return string
 	 */
-	public function getKeyHandle()
+	public function getKeyHandle(): string
 	{
 		return $this->keyHandle;
 	}
@@ -76,5 +86,4 @@ class SignRequest implements \JsonSerializable
 			'appId' => $this->appId,
 		];
 	}
-
 }

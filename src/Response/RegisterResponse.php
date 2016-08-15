@@ -1,31 +1,48 @@
 <?php
+declare(strict_types=1);
 
-namespace lookyman\U2f\Server;
+namespace Lookyman\U2F\Response;
 
+use Lookyman\U2F\Helpers;
 use Nette\Utils\Json;
 
 class RegisterResponse
 {
-
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $certificate;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $challenge;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $clientData;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $keyHandle;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $publicKey;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $signature;
 
-	public function __construct($registrationData, $clientData)
+	/**
+	 * @param string $registrationData
+	 * @param string $clientData
+	 */
+	public function __construct(string $registrationData, string $clientData)
 	{
 		$this->clientData = $clientData;
 		$this->challenge = Helpers::urlSafeBase64Decode(Json::decode($clientData)->challenge);
@@ -43,7 +60,7 @@ class RegisterResponse
 	/**
 	 * @return string
 	 */
-	public function getCertificate()
+	public function getCertificate(): string
 	{
 		return $this->certificate;
 	}
@@ -51,7 +68,7 @@ class RegisterResponse
 	/**
 	 * @return string
 	 */
-	public function getChallenge()
+	public function getChallenge(): string
 	{
 		return $this->challenge;
 	}
@@ -59,7 +76,7 @@ class RegisterResponse
 	/**
 	 * @return string
 	 */
-	public function getClientData()
+	public function getClientData(): string
 	{
 		return $this->clientData;
 	}
@@ -67,7 +84,7 @@ class RegisterResponse
 	/**
 	 * @return string
 	 */
-	public function getKeyHandle()
+	public function getKeyHandle(): string
 	{
 		return $this->keyHandle;
 	}
@@ -75,7 +92,7 @@ class RegisterResponse
 	/**
 	 * @return string
 	 */
-	public function getPublicKey()
+	public function getPublicKey(): string
 	{
 		return $this->publicKey;
 	}
@@ -83,9 +100,8 @@ class RegisterResponse
 	/**
 	 * @return string
 	 */
-	public function getSignature()
+	public function getSignature(): string
 	{
 		return $this->signature;
 	}
-
 }

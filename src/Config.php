@@ -1,24 +1,23 @@
 <?php
+declare(strict_types=1);
 
-namespace lookyman\U2f\Server;
+namespace Lookyman\U2F;
 
 class Config
 {
-
-	/** string */
 	const U2F_VERSION = 'U2F_V2';
 
 	/** @var string */
 	private $appId;
 
-	/** @var string|NULL */
+	/** @var string|null */
 	private $attestDir;
 
 	/**
 	 * @param string $appId
-	 * @param string|NULL $attestDir
+	 * @param string|null $attestDir
 	 */
-	public function __construct($appId, $attestDir = NULL)
+	public function __construct(string $appId, $attestDir = null)
 	{
 		$this->appId = $appId;
 		$this->attestDir = $attestDir;
@@ -27,7 +26,7 @@ class Config
 	/**
 	 * @return string
 	 */
-	public function getAppId()
+	public function getAppId(): string
 	{
 		return $this->appId;
 	}
@@ -35,17 +34,16 @@ class Config
 	/**
 	 * @return string
 	 */
-	public function getVersion()
+	public function getVersion(): string
 	{
 		return self::U2F_VERSION;
 	}
 
 	/**
-	 * @return string|NULL
+	 * @return string|null
 	 */
 	public function getAttestDir()
 	{
 		return $this->attestDir;
 	}
-
 }

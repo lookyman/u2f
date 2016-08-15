@@ -1,39 +1,45 @@
 <?php
+declare(strict_types=1);
 
-namespace lookyman\U2f\Server;
+namespace Lookyman\U2F\Request;
+
+use Lookyman\U2F\Collection\SignRequestCollection;
+use Lookyman\U2F\Helpers;
 
 class RegisterRequest implements \JsonSerializable
 {
-
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $version;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $appId;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $challenge;
 
-	/** @var SignRequestCollection */
-	private $requests;
-
 	/**
-	 * @param string $version
-	 * @param string $appId
-	 * @param string $challenge
+	 * @var SignRequestCollection
 	 */
-	public function __construct($version, $appId, $challenge, SignRequestCollection $requests)
+	private $signRequests;
+
+	public function __construct(string $version, string $appId, string $challenge, SignRequestCollection $signRequests)
 	{
 		$this->version = $version;
 		$this->appId = $appId;
 		$this->challenge = $challenge;
-		$this->requests = $requests;
+		$this->signRequests = $signRequests;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getAppId()
+	public function getAppId(): string
 	{
 		return $this->appId;
 	}
@@ -41,7 +47,7 @@ class RegisterRequest implements \JsonSerializable
 	/**
 	 * @return string
 	 */
-	public function getChallenge()
+	public function getChallenge(): string
 	{
 		return $this->challenge;
 	}
@@ -49,15 +55,15 @@ class RegisterRequest implements \JsonSerializable
 	/**
 	 * @return SignRequestCollection
 	 */
-	public function getSignRequests()
+	public function getSignRequests(): SignRequestCollection
 	{
-		return $this->requests;
+		return $this->signRequests;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getVersion()
+	public function getVersion(): string
 	{
 		return $this->version;
 	}
@@ -74,5 +80,4 @@ class RegisterRequest implements \JsonSerializable
 			'appId' => $this->appId,
 		];
 	}
-
 }

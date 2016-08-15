@@ -1,21 +1,20 @@
 <?php
+declare(strict_types=1);
 
-namespace lookyman\U2f\Server;
+namespace Lookyman\U2F;
 
-use lookyman\U2f\Exception\IException;
-use lookyman\U2f\Exception\PublicKeyException;
+use Lookyman\U2F\Exception\IException;
+use Lookyman\U2F\Exception\PublicKeyException;
 
 class Helpers
 {
-
-	/** int */
 	const PUBLIC_KEY_LENGTH = 65;
 
 	/**
 	 * @param string $data
 	 * @return string
 	 */
-	public static function urlSafeBase64Encode($data)
+	public static function urlSafeBase64Encode(string $data): string
 	{
 		return trim(strtr(base64_encode($data), '+/', '-_'), '=');
 	}
@@ -24,7 +23,7 @@ class Helpers
 	 * @param string $data
 	 * @return string
 	 */
-	public static function urlSafeBase64Decode($data)
+	public static function urlSafeBase64Decode(string $data): string
 	{
 		return base64_decode(strtr($data, '-_', '+/'));
 	}
@@ -33,7 +32,7 @@ class Helpers
 	 * @param string $data
 	 * @return string
 	 */
-	public static function publicKey2Pem($data)
+	public static function publicKey2Pem(string $data): string
 	{
 		if (strlen($data) !== self::PUBLIC_KEY_LENGTH || $data[0] !== "\x04") {
 			throw new PublicKeyException('Decoding of public key failed.', IException::ERR_PUBKEY_DECODE);
@@ -52,7 +51,7 @@ class Helpers
 	 * @param string $data
 	 * @return string
 	 */
-	public static function formatCert($data)
+	public static function formatCert(string $data): string
 	{
 		return sprintf(
 			"-----BEGIN CERTIFICATE-----\r\n%s-----END CERTIFICATE-----",
@@ -64,7 +63,7 @@ class Helpers
 	 * @param string $certificate
 	 * @return string
 	 */
-	public static function fixSignatureUnusedBits($certificate)
+	public static function fixSignatureUnusedBits(string $certificate): string
 	{
 		if (in_array(hash('sha256', $certificate), [
 			'349bca1031f8c82c4ceca38b9cebf1a69df9fb3b94eed99eb3fb9aa3822d26e8',
@@ -78,5 +77,4 @@ class Helpers
 		}
 		return $certificate;
 	}
-
 }

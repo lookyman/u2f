@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="./tests/bootstrap.php" verbose="true">
 	<testsuites>
-		<testsuite name="lookyman/U2f">
+		<testsuite name="Lookyman/U2F">
 			<directory>./tests</directory>
 		</testsuite>
 	</testsuites>
-    <logging>
-        <log type="coverage-clover" target="./coverage.xml"/>
-    </logging>
+	<filter>
+		<whitelist>
+			<directory>./src</directory>
+		</whitelist>
+	</filter>
 </phpunit>

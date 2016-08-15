@@ -1,8 +1,8 @@
 <?php
+declare(strict_types=1);
 
-namespace lookyman\U2f\Exception;
+namespace Lookyman\U2F\Exception;
 
 class AuthenticationException extends \Exception implements IException
 {
-
 }

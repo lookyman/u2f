@@ -1,36 +1,41 @@
 <?php
+declare(strict_types=1);
 
-namespace lookyman\U2f\Server;
+namespace Lookyman\U2F;
 
+use Lookyman\U2F\Collection\RegistrationCollection;
+use Lookyman\U2F\Collection\SignRequestCollection;
+use Lookyman\U2F\Exception\AuthenticationException;
+use Lookyman\U2F\Exception\IException;
+use Lookyman\U2F\Exception\PublicKeyException;
+use Lookyman\U2F\Exception\RegistrationException;
+use Lookyman\U2F\Request\RegisterRequest;
+use Lookyman\U2F\Request\SignRequest;
+use Lookyman\U2F\Response\RegisterResponse;
+use Lookyman\U2F\Response\SignResponse;
 use Nette\Utils\Finder;
-use lookyman\U2f\Entropy\IEntropyProvider;
-use lookyman\U2f\Exception\AuthenticationException;
-use lookyman\U2f\Exception\IException;
-use lookyman\U2f\Exception\PublicKeyException;
-use lookyman\U2f\Exception\RegistrationException;
 
 class Server
 {
-
-	/** int */
 	const CHALLENGE_LENGTH = 32;
 
-	/** @var Config */
+	/**
+	 * @var Config
+	 */
 	private $config;
 
-	/** @var IEntropyProvider */
-	private $entropyProvider;
-
-	public function __construct(Config $config, IEntropyProvider $entropyProvider)
+	/**
+	 * @param Config $config
+	 */
+	public function __construct(Config $config)
 	{
 		$this->config = $config;
-		$this->entropyProvider = $entropyProvider;
 	}
 
 	/**
 	 * @return RegisterRequest
 	 */
-	public function createRegisterRequest(RegistrationCollection $registrations)
+	public function createRegisterRequest(RegistrationCollection $registrations): RegisterRequest
 	{
 		return new RegisterRequest(
 			$this->config->getVersion(),
@@ -43,7 +48,7 @@ class Server
 	/**
 	 * @return Registration
 	 */
-	public function register(RegisterRequest $request, RegisterResponse $response)
+	public function register(RegisterRequest $request, RegisterResponse $response): Registration
 	{
 		if ($response->getChallenge() !== $request->getChallenge()) {
 			throw new RegistrationException('Registration challenge does not match.', IException::ERR_UNMATCHED_CHALLENGE);
@@ -51,7 +56,7 @@ class Server
 
 		$certificate = Helpers::formatCert($response->getCertificate());
 
-		if ($this->checkAttest($certificate) !== TRUE) {
+		if ($this->checkAttest($certificate) !== true) {
 			throw new RegistrationException('Attestation certificate can not be validated.', IException::ERR_ATTESTATION_VERIFICATION);
 
 		} elseif (!openssl_pkey_get_public($certificate)) {
@@ -71,15 +76,14 @@ class Server
 			$response->getKeyHandle(),
 			$response->getCertificate()
 		);
-
 	}
 
 	/**
 	 * @return SignRequestCollection
 	 */
-	public function createSignRequests(RegistrationCollection $registrations)
+	public function createSignRequests(RegistrationCollection $registrations): SignRequestCollection
 	{
-		$requests = new SignRequestCollection;
+		$requests = new SignRequestCollection();
 		foreach ($registrations as $registration) {
 			$requests->add(new SignRequest(
 				$this->config->getVersion(),
@@ -94,7 +98,7 @@ class Server
 	/**
 	 * @return Registration
 	 */
-	public function authenticate(SignRequestCollection $requests, RegistrationCollection $registrations, SignResponse $response)
+	public function authenticate(SignRequestCollection $requests, RegistrationCollection $registrations, SignResponse $response): Registration
 	{
 		$registration = $registrations->getMatchingRegistration($response);
 
@@ -119,20 +123,20 @@ class Server
 	/**
 	 * @return string
 	 */
-	private function createChallenge()
+	private function createChallenge(): string
 	{
-		return $this->entropyProvider->getPseudoRandomBytes(self::CHALLENGE_LENGTH);
+		return random_bytes(self::CHALLENGE_LENGTH);
 	}
 
 	/**
 	 * @return string
 	 */
-	private function getRegisterVerificationData(RegisterRequest $request, RegisterResponse $response)
+	private function getRegisterVerificationData(RegisterRequest $request, RegisterResponse $response): string
 	{
 		return sprintf(
 			"\0%s%s%s%s",
-			hash('sha256', $request->getAppId(), TRUE),
-			hash('sha256', $response->getClientData(), TRUE),
+			hash('sha256', $request->getAppId(), true),
+			hash('sha256', $response->getClientData(), true),
 			$response->getKeyHandle(),
 			$response->getPublicKey()
 		);
@@ -141,31 +145,30 @@ class Server
 	/**
 	 * @return string
 	 */
-	private function getAuthenticateVerificationData(SignRequest $request, SignResponse $response)
+	private function getAuthenticateVerificationData(SignRequest $request, SignResponse $response): string
 	{
 		return sprintf(
 			'%s%s%s',
-			hash('sha256', $request->getAppId(), TRUE),
+			hash('sha256', $request->getAppId(), true),
 			$response->getSignaturePrefix(),
-			hash('sha256', $response->getClientData(), TRUE)
+			hash('sha256', $response->getClientData(), true)
 		);
 	}
 
 	/**
 	 * @param string $certificate
-	 * @return boolean
+	 * @return bool
 	 */
-	private function checkAttest($certificate)
+	private function checkAttest($certificate): bool
 	{
 		if (!$this->config->getAttestDir()) {
-			return TRUE;
+			return true;
 		}
 
 		// @todo Original purpose is -1 which is undocumented. Is ANY ok to use here?
 		// https://github.com/Yubico/php-u2flib-server/blob/cd49f97017c8415be3e190397565719b5319d2d6/src/u2flib_server/U2F.php#L192
 		return openssl_x509_checkpurpose($certificate, X509_PURPOSE_ANY, array_map(function ($file) {
 			return $file->getPathName();
-		}, iterator_to_array(Finder::findFiles('*.pem')->from($this->config->getAttestDir()), FALSE))) === TRUE;
+		}, iterator_to_array(Finder::findFiles('*.pem')->from($this->config->getAttestDir()), false))) === true;
 	}
-
 }

@@ -1,23 +1,23 @@
 <?php
+declare(strict_types=1);
 
-namespace lookyman\U2f\Server;
+namespace Lookyman\U2F\Collection;
 
-use lookyman\U2f\Exception\IException;
-use lookyman\U2f\Exception\SignRequestException;
+use Lookyman\U2F\Exception\IException;
+use Lookyman\U2F\Exception\SignRequestException;
+use Lookyman\U2F\Request\SignRequest;
+use Lookyman\U2F\Response\SignResponse;
 
 class SignRequestCollection implements \Countable, \IteratorAggregate, \JsonSerializable
 {
-
-	/** @var SignRequest[] */
+	/**
+	 * @var SignRequest[]
+	 */
 	private $requests = [];
 
-	/**
-	 * @return self
-	 */
 	public function add(SignRequest $request)
 	{
 		$this->requests[] = $request;
-		return $this;
 	}
 
 	/**
@@ -59,5 +59,4 @@ class SignRequestCollection implements \Countable, \IteratorAggregate, \JsonSeri
 	{
 		return $this->requests;
 	}
-
 }

@@ -1,13 +1,13 @@
 <?php
+declare(strict_types=1);
 
-namespace lookyman\U2f\Tests\Server;
+namespace Lookyman\U2F\Tests\Response;
 
-use lookyman\U2f\Server\Helpers;
-use lookyman\U2f\Server\RegisterResponse;
+use Lookyman\U2F\Helpers;
+use Lookyman\U2F\Response\RegisterResponse;
 
 class RegisterResponseTest extends \PHPUnit_Framework_TestCase
 {
-
 	public function testGetSet()
 	{
 		$response = new RegisterResponse(
@@ -15,17 +15,17 @@ class RegisterResponseTest extends \PHPUnit_Framework_TestCase
 			Helpers::urlSafeBase64Decode('eyAiY2hhbGxlbmdlIjogInlLQTB4MDc1dGpKLUdFN2ZLVGZuelRPU2FOVU9XUXhSZDlUV3o1YUZPZzgiLCAib3JpZ2luIjogImh0dHA6XC9cL2RlbW8uZXhhbXBsZS5jb20iLCAidHlwIjogIm5hdmlnYXRvci5pZC5maW5pc2hFbnJvbGxtZW50IiB9')
 		);
 
-		$this->assertSame('MIIC4jCBywIBATANBgkqhkiG9w0BAQsFADAdMRswGQYDVQQDExJZdWJpY28gVTJGIFRlc3QgQ0EwHhcNMTQwNTE1MTI1ODU0WhcNMTQwNjE0MTI1ODU0WjAdMRswGQYDVQQDExJZdWJpY28gVTJGIFRlc3QgRUUwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAATbCtv1IcdczmPcpuHoJQYNlOYnVBlPnSSvJhq-rZlEH5WjcZEKOiDnPpFeE-i-OAV61XqjfnaQj6_iipS2MOudMA0GCSqGSIb3DQEBCwUAA4ICAQCVQGtQYX2thKO064gP4zAPLaIKANklBO5y-mffWFEPC0cCnD5BKUqTrCmFiS2keoEyKFdxAe-oQogWljeR1d_gj8k8jbDNiXCC7HnTxnhzKTLlq2y9Vp_VRZHOwd2NZNzpnB9ePNKvUaWCGK_gN-cynnYFdwJ75iSgMVYb_RnFcdPwnsBzBU68hbhTnu_FvJxWo7rZJ2q7qXpA10eLVXJr4_4oSXEk9I_0IIHqOP98Ck_fAoI5gYI7ygndyqoPJ_Wkg1VsmjmbFToWY9xb-axbvPefvg-KojwxE6MySMpYh_h7oKEKamCWk19dJp5jHQmumkHlvQhH_uUJmyD9EuLmQH-6SmEzZg0Oc9uw1aKamhcNNDCFakJGnv80j1-HbDXnqE0168FBqorS2hmqeaJfNSyg_SXT950lGC36tLy7BzQ8jYG99Ok32znp0UVbIEEvLSci3JJ0ipLVg_0J-xOb4zl6a1z65nae4OTj7628_UJFmtSU0X6Np9gF1dNizxXPlH0fW1ggRCCQcb5m6ZqrdDJwUx1p7Ydm9AlPyiUwwmN5ADyxmzk_AOCoiO96UVvnvUlk2kF7JMNxIv3R0SCzP5fTl7KqGByeA3d7W375o6DWIIEsOI-dJd7pyPXdakecZQRaVubC6_ICl-G52OEkdp8jYjkDS8j3NAdJ1udNmg', Helpers::urlSafeBase64Encode($response->getCertificate()));
-		$this->assertSame('yKA0x075tjJ-GE7fKTfnzTOSaNUOWQxRd9TWz5aFOg8', Helpers::urlSafeBase64Encode($response->getChallenge()));
-		$this->assertSame('{ "challenge": "yKA0x075tjJ-GE7fKTfnzTOSaNUOWQxRd9TWz5aFOg8", "origin": "http:\/\/demo.example.com", "typ": "navigator.id.finishEnrollment" }', $response->getClientData());
-		$this->assertSame('CTUayZo8hCBeC-sGQJChC0wW-bBg99bmOlGCgw8XGq4dLsxO3yWh9mRYArZxocP5hBB1pEGB3bbJYiM-5acc5w', Helpers::urlSafeBase64Encode($response->getKeyHandle()));
-		$this->assertSame('BC0SaFZWC9uH7wamOwduP93kUH2I2hEvyY0Srfj4A258pZSlV0iPoFIH-bd4yhncaqdoPLdEDl5Y_yaFORPUe3c', Helpers::urlSafeBase64Encode($response->getPublicKey()));
-		$this->assertSame('MEUCIQDTGOX-i_QrffJDY8XvKbPwMuBVrOSO-ayvTnWs_WSuDQIgZ7fMAvD_Ezyy5jg6fQeuOkoJi8V2naCtzV-HTly8Nww', Helpers::urlSafeBase64Encode($response->getSignature()));
+		self::assertSame('MIIC4jCBywIBATANBgkqhkiG9w0BAQsFADAdMRswGQYDVQQDExJZdWJpY28gVTJGIFRlc3QgQ0EwHhcNMTQwNTE1MTI1ODU0WhcNMTQwNjE0MTI1ODU0WjAdMRswGQYDVQQDExJZdWJpY28gVTJGIFRlc3QgRUUwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAATbCtv1IcdczmPcpuHoJQYNlOYnVBlPnSSvJhq-rZlEH5WjcZEKOiDnPpFeE-i-OAV61XqjfnaQj6_iipS2MOudMA0GCSqGSIb3DQEBCwUAA4ICAQCVQGtQYX2thKO064gP4zAPLaIKANklBO5y-mffWFEPC0cCnD5BKUqTrCmFiS2keoEyKFdxAe-oQogWljeR1d_gj8k8jbDNiXCC7HnTxnhzKTLlq2y9Vp_VRZHOwd2NZNzpnB9ePNKvUaWCGK_gN-cynnYFdwJ75iSgMVYb_RnFcdPwnsBzBU68hbhTnu_FvJxWo7rZJ2q7qXpA10eLVXJr4_4oSXEk9I_0IIHqOP98Ck_fAoI5gYI7ygndyqoPJ_Wkg1VsmjmbFToWY9xb-axbvPefvg-KojwxE6MySMpYh_h7oKEKamCWk19dJp5jHQmumkHlvQhH_uUJmyD9EuLmQH-6SmEzZg0Oc9uw1aKamhcNNDCFakJGnv80j1-HbDXnqE0168FBqorS2hmqeaJfNSyg_SXT950lGC36tLy7BzQ8jYG99Ok32znp0UVbIEEvLSci3JJ0ipLVg_0J-xOb4zl6a1z65nae4OTj7628_UJFmtSU0X6Np9gF1dNizxXPlH0fW1ggRCCQcb5m6ZqrdDJwUx1p7Ydm9AlPyiUwwmN5ADyxmzk_AOCoiO96UVvnvUlk2kF7JMNxIv3R0SCzP5fTl7KqGByeA3d7W375o6DWIIEsOI-dJd7pyPXdakecZQRaVubC6_ICl-G52OEkdp8jYjkDS8j3NAdJ1udNmg', Helpers::urlSafeBase64Encode($response->getCertificate()));
+		self::assertSame('yKA0x075tjJ-GE7fKTfnzTOSaNUOWQxRd9TWz5aFOg8', Helpers::urlSafeBase64Encode($response->getChallenge()));
+		self::assertSame('{ "challenge": "yKA0x075tjJ-GE7fKTfnzTOSaNUOWQxRd9TWz5aFOg8", "origin": "http:\/\/demo.example.com", "typ": "navigator.id.finishEnrollment" }', $response->getClientData());
+		self::assertSame('CTUayZo8hCBeC-sGQJChC0wW-bBg99bmOlGCgw8XGq4dLsxO3yWh9mRYArZxocP5hBB1pEGB3bbJYiM-5acc5w', Helpers::urlSafeBase64Encode($response->getKeyHandle()));
+		self::assertSame('BC0SaFZWC9uH7wamOwduP93kUH2I2hEvyY0Srfj4A258pZSlV0iPoFIH-bd4yhncaqdoPLdEDl5Y_yaFORPUe3c', Helpers::urlSafeBase64Encode($response->getPublicKey()));
+		self::assertSame('MEUCIQDTGOX-i_QrffJDY8XvKbPwMuBVrOSO-ayvTnWs_WSuDQIgZ7fMAvD_Ezyy5jg6fQeuOkoJi8V2naCtzV-HTly8Nww', Helpers::urlSafeBase64Encode($response->getSignature()));
 	}
 
 	/**
-	 * @expectedException \lookyman\U2f\Exception\PublicKeyException
-	 * @expectedExceptionCode \lookyman\U2f\Exception\IException::ERR_PUBKEY_DECODE
+	 * @expectedException \Lookyman\U2F\Exception\PublicKeyException
+	 * @expectedExceptionCode \Lookyman\U2F\Exception\IException::ERR_PUBKEY_DECODE
 	 */
 	public function testInvalidPublicKey()
 	{
@@ -34,5 +34,4 @@ class RegisterResponseTest extends \PHPUnit_Framework_TestCase
 			Helpers::urlSafeBase64Decode('eyAiY2hhbGxlbmdlIjogInlLQTB4MDc1dGpKLUdFN2ZLVGZuelRPU2FOVU9XUXhSZDlUV3o1YUZPZzgiLCAib3JpZ2luIjogImh0dHA6XC9cL2RlbW8uZXhhbXBsZS5jb20iLCAidHlwIjogIm5hdmlnYXRvci5pZC5maW5pc2hFbnJvbGxtZW50IiB9')
 		);
 	}
-
 }

@@ -1,46 +1,62 @@
 <?php
+declare(strict_types=1);
 
-namespace lookyman\U2f\Server;
+namespace Lookyman\U2F\Response;
 
+use Lookyman\U2F\Helpers;
 use Nette\Utils\Json;
 
 class SignResponse
 {
-
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $keyHandle;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $challenge;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $signaturePrefix;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $clientData;
 
-	/** @var string */
+	/**
+	 * @var string
+	 */
 	private $signature;
 
-	/** @var int */
+	/**
+	 * @var int
+	 */
 	private $counter;
 
-	public function __construct($keyHandle, $signatureData, $clientData)
+	/**
+	 * @param string $keyHandle
+	 * @param string $signatureData
+	 * @param string $clientData
+	 */
+	public function __construct(string $keyHandle, string $signatureData, string $clientData)
 	{
 		$this->keyHandle = $keyHandle;
 		$this->clientData = $clientData;
 		$this->challenge = Helpers::urlSafeBase64Decode(Json::decode($clientData)->challenge);
-
 		$this->signaturePrefix = substr($signatureData, 0, 5);
 		$this->signature = substr($signatureData, 5);
-
 		$this->counter = unpack('Nctr', substr($this->signaturePrefix, 1, 4))['ctr'];
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getKeyHandle()
+	public function getKeyHandle(): string
 	{
 		return $this->keyHandle;
 	}
@@ -48,7 +64,7 @@ class SignResponse
 	/**
 	 * @return string
 	 */
-	public function getChallenge()
+	public function getChallenge(): string
 	{
 		return $this->challenge;
 	}
@@ -56,7 +72,7 @@ class SignResponse
 	/**
 	 * @return string
 	 */
-	public function getSignaturePrefix()
+	public function getSignaturePrefix(): string
 	{
 		return $this->signaturePrefix;
 	}
@@ -64,7 +80,7 @@ class SignResponse
 	/**
 	 * @return string
 	 */
-	public function getClientData()
+	public function getClientData(): string
 	{
 		return $this->clientData;
 	}
@@ -72,7 +88,7 @@ class SignResponse
 	/**
 	 * @return string
 	 */
-	public function getSignature()
+	public function getSignature(): string
 	{
 		return $this->signature;
 	}
@@ -80,9 +96,8 @@ class SignResponse
 	/**
 	 * @return int
 	 */
-	public function getCounter()
+	public function getCounter(): int
 	{
 		return $this->counter;
 	}
-
 }

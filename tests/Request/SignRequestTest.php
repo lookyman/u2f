@@ -1,19 +1,19 @@
 <?php
+declare(strict_types=1);
 
-namespace lookyman\U2f\Tests\Server;
+namespace Lookyman\U2F\Tests\Request;
 
-use lookyman\U2f\Server\SignRequest;
+use Lookyman\U2F\Request\SignRequest;
 
 class SignRequestTest extends \PHPUnit_Framework_TestCase
 {
-
 	public function testGetSet()
 	{
 		$request = new SignRequest('a', 'b', 'c', 'd');
-		$this->assertSame('a', $request->getVersion());
-		$this->assertSame('b', $request->getAppId());
-		$this->assertSame('c', $request->getChallenge());
-		$this->assertSame('d', $request->getKeyHandle());
+		self::assertSame('a', $request->getVersion());
+		self::assertSame('b', $request->getAppId());
+		self::assertSame('c', $request->getChallenge());
+		self::assertSame('d', $request->getKeyHandle());
 	}
 
 	public function testJsonSerialize()
@@ -23,5 +23,4 @@ class SignRequestTest extends \PHPUnit_Framework_TestCase
 			json_encode(new SignRequest('a', 'b', 'c', 'd'))
 		);
 	}
-
 }
